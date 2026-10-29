@@ -5,7 +5,7 @@ import seaborn as sns
 
 df = pd.read_csv('dataset/AI_Impact_on_Human_Mental_Growth.csv')
 
-#analisando o datase
+#analisando o dataset
 
 #criando categoria "Not Informed" na coluna AI_Tool_Category
 
