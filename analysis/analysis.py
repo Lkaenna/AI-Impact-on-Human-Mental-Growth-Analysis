@@ -102,6 +102,7 @@ correlacao_senso = df_new["AI_Dependency_Score"].corr(
 print(f"Correlação: {correlacao:.4f}")
 
 #Grafico 
+
 fig, ax = plt.subplots(figsize=(10, 6))
 
 sns.scatterplot(
@@ -122,6 +123,7 @@ plt.tight_layout()
 plt.close("all")
 
 #Analisando o Scenario
+#diretamente ligado ao outcome_label
 df_new["Scenario"].value_counts()
 
 media_por_scenario = df_new.groupby("Scenario")[
@@ -143,7 +145,6 @@ correlacoes_scenario = df_new.groupby("Scenario").apply(
 print(correlacoes_scenario)
 
 #Grafico da relação entre dependencia e pensamento crítico, separando por scenario
-
 g = sns.lmplot(
     data=df_new,
     x="AI_Dependency_Score",
@@ -211,7 +212,7 @@ tabela_cognitivos = df_new.groupby("Outcome_Label")[colunas].mean().round(2)
 
 print(tabela_cognitivos)
 
-#Grafico
+#Grafico distribuicao de outcome_label por scenario
 
 tabela = pd.crosstab(
     df_new["Scenario"],
@@ -238,3 +239,124 @@ plt.legend(
 plt.tight_layout()
 #plt.show()
 plt.close("all")
+
+
+#selecionado 5 features:
+#Weekly_AI_Usage_Hours, AI_Dependency_Score, Cognitive_Load_Index, Critical_Thinking_Ability, Human_Creativity_Score e Mental_Wellbeing_Score
+
+
+#Grafico relacao da Cognitive_Load_Index com Dependence_IA
+
+sns.scatterplot(
+    data=df_new,
+    x="AI_Dependency_Score",
+    y="Cognitive_Load_Index",
+    alpha=0.3
+)
+
+plt.title("AI Dependency vs Cognitive Load")
+plt.xlabel("AI Dependency Score")
+plt.ylabel("Cognitive Load Index")
+#plt.show()
+plt.close("all")
+
+#correlacao 
+correlacao_cognitive = df_new["AI_Dependency_Score"].corr(
+    df_new["Cognitive_Load_Index"]
+)
+print(correlacao_cognitive)
+
+#carga cognitiva x pensamento critico
+
+sns.scatterplot(
+    data=df_new,
+    x="Cognitive_Load_Index",
+    y="Critical_Thinking_Ability",
+    alpha=0.3
+)
+
+plt.title("Cognitive Load vs Critical Thinking")
+plt.xlabel("Cognitive Load Index")
+plt.ylabel("Critical Thinking Ability")
+#plt.show()
+plt.close("all")
+
+#correlacao
+
+correlacao_thinking = df_new["Cognitive_Load_Index"].corr(
+    df_new["Critical_Thinking_Ability"]
+    )
+print(correlacao_thinking)
+
+#criatividade x pensamento critico
+
+
+sns.scatterplot(
+    data=df_new,
+    x="Human_Creativity_Score",
+    y="Critical_Thinking_Ability",
+    alpha=0.3
+)
+
+plt.title("Human Creativity vs Critical Thinking")
+plt.xlabel("Human Creativity Score")
+plt.ylabel("Critical Thinking Ability")
+#plt.show()
+plt.close("all")
+
+#correlacao criativadade x pensamento critico
+correlacao_criatividade= df_new["Human_Creativity_Score"].corr(
+    df_new["Critical_Thinking_Ability"]
+)
+print(correlacao_criatividade)
+
+# bem estar mental x carga cognitiva
+
+sns.scatterplot(
+    data=df_new,
+    x="Mental_Wellbeing_Score",
+    y="Cognitive_Load_Index",
+    alpha= 0.3
+)
+
+plt.title("Mental Wellbeing x Cognitive Load")
+plt.xlabel("Mental Wellbeing")
+plt.ylabel("Cognitive Load")
+#plt.show()
+plt.close("all")
+
+#correlacao mental x cognitive
+correlacao_mental = df_new["Mental_Wellbeing_Score"].corr(
+    df_new["Cognitive_Load_Index"]
+)
+print(correlacao_mental)
+
+
+#correlacao das 6 features escolhidas
+features = [
+    "Weekly_AI_Usage_Hours",
+    "AI_Dependency_Score",
+    "Cognitive_Load_Index",
+    "Critical_Thinking_Ability",
+    "Human_Creativity_Score",
+    "Mental_Wellbeing_Score"
+]
+
+corr = df_new[features].corr()
+
+plt.figure(figsize=(10, 8))
+
+sns.heatmap(
+    corr,
+    annot=True,
+    cmap="coolwarm",
+    fmt=".2f",
+    vmin=-1,
+    vmax=1
+)
+
+plt.title("Correlation Matrix - Selected Features")
+#plt.show()
+
+plt.close("all")
+
